@@ -13,7 +13,7 @@ def load_workbook_from_bytes(file_in_bytes):
     return openpyxl.load_workbook(xlsx)
 
 
-def load_and_save_workbook(file_name, file_in_bytes):
+def load_workbook_and_save_to_file(file_name, file_in_bytes):
     wb = load_workbook_from_bytes(file_in_bytes)
     save_workbook_to_file(wb, file_name)
     logging.info(f'Файл {file_name} успешно сохранен.')

@@ -22,16 +22,19 @@ def get_message(messages, connection):
         yield message
 
 
+def get_last_message(code, messages, mail_connection):
+    logging.info('Получаю последнее сообщение...')
+    if code == 'OK' and messages[0]:
+        return next(get_message(messages, mail_connection))
+    logging.warning('Сообщения соответствующие фильтру не найдены!')
+
+
 def get_last_filtered_message(email_address, password, imap_server):
     logging.info('Подключаюсь к серверу...')
     with IMAP4_SSL(imap_server) as mail_connection:
         mail_connection.login(email_address, password)
         code, messages = filtering_emails(mail_connection)
-        logging.info('Получаю последнее сообщение...')
-        if code == 'OK' and messages[0]:
-            return next(get_message(messages, mail_connection))
-        else:
-            logging.warning('Сообщения соответствующие фильтру не найдены!')
+        return get_last_message(code, messages, mail_connection)
 
 
 def get_mail_attachments(message, condition_check):
